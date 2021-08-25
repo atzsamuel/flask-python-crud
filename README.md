@@ -7,7 +7,7 @@ https://chartjs.org
 https://bootswatch.com/
 
 
-![image](https://user-images.githubusercontent.com/26560418/130842539-bdda53f0-c31d-45d5-aad4-b89275048ffa.png)
+![git1 (1)](https://user-images.githubusercontent.com/26560418/130847414-65398b88-1c99-45a2-9271-09d2def8945c.png)
 
 ----------------------------------------------------------------------------------------------------------------
 ![image](https://user-images.githubusercontent.com/26560418/130842555-6767029f-cdb3-4c50-a8b3-b090f695f899.png)
