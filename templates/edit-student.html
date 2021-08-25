@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <div class="card card-body" class="form-group">
+      <form action="/update/{{student['id']}}" method="POST">
+        <div class="form-group">
+          <input type="number" class="form-control" name="id" placeholder="Id" value="{{student['id']}}">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="firstName" placeholder="First Name"
+            value="{{student['firstName']}}">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="lastName" placeholder="Last Name"
+            value="{{student['lastName']}}">
+        </div>
+        <div class="form-group">
+          <input type="number" class="form-control" name="age" placeholder="Age" value="{{student['age']}}">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

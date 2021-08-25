@@ -1,0 +1,220 @@
+{% extends 'layout.html' %} {% block body %}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Manage <b>Students </b> </h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card-body">
+            <div class="chart-container" style="position: relative;">
+                <canvas id="myChart" max-width="100" max-height="100"></canvas>
+            </div>
+        </div>
+
+
+        <script>
+            let studentsLabel = JSON.parse({{ dataLabel | tojson}});
+            let studentsData = JSON.parse({{ dataChart | tojson}});
+            let bgColor = JSON.parse({{ bgColor | tojson}});
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: studentsLabel,
+                    datasets: [{
+                        label: '# of Age Students',
+                        data: studentsData,
+                        backgroundColor: bgColor,
+                        borderColor: bgColor,
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-2">
+        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Add New
+            Student</button>
+    </div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover table-dark ">
+            <thead>
+                <tr>
+                    {% for col in columns %}
+                    <th>{{col}}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in dataStudent %}
+                <tr>
+                    <td>{{ student['id'] }}</td>
+                    <td>{{ student['firstName'] }}</td>
+                    <td>{{ student['lastName'] }}</td>
+                    <td>{{ student['age'] }}</td>
+                    <td>{{ student['year'] }}</td>
+                    <td>
+                        <a href="/update/{{student['id']}}" class="btn btn-success" data-toggle="modal"
+                            data-target="#modaledit{{student['id']}}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="/delete/{{student['id']}}" class="btn btn-danger btn-delete">Delete</a>
+                    </td>
+                </tr>
+
+
+                <!-- Modal Edit Student-->
+                <div id="modaledit{{student['id']}}" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h4 class="modal-title">Update Information</h4>
+                            </div>
+
+                            <form action="/update/{{student['id']}}" method="POST">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="eid">Id*</label>
+                                            <input id="eid" type="number" disabled class="form-control" name="id"
+                                                placeholder="Id" value="{{student['id']}}">
+                                        </div>
+                                        <div class="col">
+                                            <label for="efirstName">First Name*</label>
+                                            <input id="efirstName" required type="text" class="form-control"
+                                                name="firstName" placeholder="First Name"
+                                                value="{{student['firstName']}}">
+                                        </div>
+                                    </div><br />
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="elastName">Last Name*</label>
+                                            <input id="elastName" required type="text" class="form-control"
+                                                name="lastName" placeholder="Last Name" value="{{student['lastName']}}">
+                                        </div>
+                                        <div class="col">
+                                            <label for="eage">Age*</label>
+                                            <input id="eage" required type="number" class="form-control" name="age"
+                                                placeholder="Age" value="{{student['age']}}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="submit" class="btn btn-primary btn-block">
+                                                Save
+                                            </button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal Edit Student-->
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Modal Add Student-->
+    <div id="mymodal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Student</h4>
+                </div>
+
+                <form action="/add_student" method="POST">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <label for="id">Id*</label>
+                                <input id="id" required type="number" class="form-control" name="id" placeholder="Id">
+                            </div>
+                            <div class="col">
+                                <label for="firstName">First Name*</label>
+                                <input id="firstName" required type="text" class="form-control" name="firstName"
+                                    placeholder="First Name">
+                            </div>
+                        </div><br />
+                        <div class="row">
+                            <div class="col">
+                                <label>Last Name*</label>
+                                <input id="lastName" required type="text" class="form-control" name="lastName"
+                                    placeholder="Last Name">
+                            </div>
+                            <div class="col">
+                                <label>Age*</label>
+                                <input id="age" required type="number" class="form-control" name="age"
+                                    placeholder="Age">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Save
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+    <!--End Modal Add Student-->
+
+</div>
+{% endblock %}
