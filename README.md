@@ -1,6 +1,12 @@
 # flask-python-crud
 Application crud with framework flask and language python
 
+Resources
+https://www.python.org/downloads/
+https://chartjs.org
+https://bootswatch.com/
+
+
 ![image](https://user-images.githubusercontent.com/26560418/130842539-bdda53f0-c31d-45d5-aad4-b89275048ffa.png)
 
 ----------------------------------------------------------------------------------------------------------------
